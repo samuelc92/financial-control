@@ -1,0 +1,10 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=145e9121_002D50bc_002D471f_002D8a13_002D3960a90f46a2/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from ScheduleExpenseUnitTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;ProjectFile&gt;8C455B71-FACF-4802-9FE9-08E44BB3E77C/d:Domain/f:ScheduleExpenseUnitTest.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::04A5CC04-D565-44C3-99D8-EFEAF7189F2C::.NETCoreApp,Version=v3.1::FinancialControl.Income.Test.Domain.SalaryTest.calculateSalary_Success&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::04A5CC04-D565-44C3-99D8-EFEAF7189F2C::.NETCoreApp,Version=v3.1::FinancialControl.Income.Test.Domain.SalaryTest.createSalary_Success&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
