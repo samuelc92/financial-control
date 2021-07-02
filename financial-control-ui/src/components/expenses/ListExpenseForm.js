@@ -1,120 +1,239 @@
-import React from 'react';
-import { Col, Row, Container, Button, Form, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import expenseService from '../../services/expenseService';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import expenseService from "../../services/expenseService";
+import clsx from 'clsx';
+import { makeStyles } from "@material-ui/core/styles";
+import TableContainer from "@material-ui/core/TableContainer";
+import Table from "@material-ui/core/Table";
+import Paper from "@material-ui/core/Paper";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import TablePagination from "@material-ui/core/TablePagination";
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import { Button, lighten, Typography } from "@material-ui/core";
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
-class ListExpenseForm extends React.Component {
+const columns = [
+  { id: "category", label: "Category", minWidth: 170 },
+  { id: "description", label: "Description", minWidth: 100 },
+  {
+    id: "amount",
+    label: "Amount",
+    minWidth: 170,
+    align: "right",
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
+    id: "transactionDate",
+    label: "TransactionDate",
+    minWidth: 170,
+    align: "right",
+  },
+];
 
-    constructor(props) {
-        super(props);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    flexGrow: 1,
+  },
+  container: {
+    maxHeight: "100",
+  },
+  buttons: {
+    margin: theme.spacing(1)
+  }
+}));
 
-        this.state = {
-            expenses: [],
-            isLoading: false
+const useToolbarStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
         }
-    }
+      : {
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  title: {
+    flex: '1 1 100%',
+  },
+}));
 
-    async componentDidMount() {
+export default function ListExpenseForm() {
+  const classes = useStyles();
+  const toolbarClasses = useToolbarStyles();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isFetched, setIsfetched] = useState(false);
+  const [expenses, setExpenses] = useState([]);
+  const [selected, setSelected] = useState([]);
+
+  const handleSelectAllClick = (event) => {
+    if (!event.target.checked) {
+      setSelected([]);
+      return;
+    }
+    const newSelecteds = expenses.map((n) => n.id);
+    setSelected(newSelecteds);
+  }
+
+  const handleClick = (event, id) => {
+    const index = selected.indexOf(id);
+    let newSelected = [];
+
+    if (index === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (index === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (index === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0,-1));
+    } else if (index > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, index),
+        selected.slice(index + 1)
+      );
+    }
+    setSelected(newSelected);
+  }
+
+  const isSelected = id => selected.indexOf(id) !== -1;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    if (!isFetched) {
         expenseService
         .getExpenses()
         .then((response) => {
-            this.setState({
-                ["expenses"]: response.data
-            });
+            setExpenses(response.data);
         })
         .catch((e) => {
             console.log(e);
         })
     }
+    setIsfetched(true);
 
-    async deleteExpense(expenseId) {
-        this.setState({["isLoading"]: true});
-        expenseService
-        .deleteExpense(expenseId)
-        .then((response) => {
-            alert('Despesa excluída com sucesso!');
-            this.setState({["isLoading"]: false});
-        })
-        .catch((e) => {
-            console.log(e);
-            this.setState({["isLoading"]: false});
-        })
-    }
+    return () => {
+      setIsfetched(false);
+    };
+  });
 
-    render() {
-        const styles = {
-            tableDiv: {
-                maxHeight: 700,
-                overflow: "scroll" 
-            }
-        };
-        return (
-            <div className="mb-3">
-                <Container>
-                    <Row>
-                        <Col>
-                            <Form.Label><h1>Expenses</h1></Form.Label>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={{span:1, offset:11}}>
-                            <Link to="/expense/create">
-                                <Button variant="primary">
-                                    Create 
-                                </Button>
-                            </Link>
-                        </Col>
-                    </Row>
-                    <Row style={styles.tableDiv}>
-                        <Table striped bordered hover variant="dark" >
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Transaction Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    this.state.expenses.map((expense) => {
-                                        return (
-                                            <tr key={expense.id}>
-                                                <td >
-                                                    <a href={`/expense/create/${expense.id}`}>
-                                                        {expense.category}
-                                                    </a>
-                                                </td>
-                                                <td>{expense.description}</td>
-                                                <td>{expense.amount}</td>
-                                                <td>{expense.transactionDate}</td>
-                                                <td>
-                                                    <Button 
-                                                        variant="danger" 
-                                                        value={expense.id} 
-                                                        onClick={!this.state.isLoading ? (e) => this.deleteExpense(e.currentTarget.value) : null}
-                                                    >
-                                                        { this.state.isLoading ? 'Deleting...' : 'Delete' }
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                                </tbody>
-                        </Table>
-                    </Row>
-                    <Row>
-                        <Col md={{offset:11}}>
-                            Total:
-                        </Col>
-                        <Col>
-                            {this.state.expenses.reduce((acc, expense) => acc + expense.amount, 0).toFixed(2)}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        );
-    }
+  return (
+    <Paper className={classes.root}>
+      <Grid container direction="row" justify="flex-end" alignItems="baseline">
+        <Grid item>
+          <Link to="/expense/create">
+            <Button variant="contained" size="medium" color="primary" className={classes.buttons}>
+              Insert
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
+      <Toolbar className={clsx(classes.root, { [toolbarClasses.highlight]: selected.length > 0 })}>
+        {selected.length > 0 ? (
+          <Typography className={toolbarClasses.title} color="inherit" variant="subtitle1" component="div">
+            {selected.length} selected
+          </Typography>
+        ) : (
+          <Typography className={toolbarClasses.title} variant="h6" id="tableTitle" component="div">
+            Expenses
+          </Typography>
+        )}
+
+        {selected.length > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton aria-label="filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={selected.length > 0 && selected.length < expenses.length}
+                  checked={expenses.length > 0 && selected.length === expenses.length}
+                  onChange={handleSelectAllClick}
+                  inputProps={{ 'aria-label': 'select all desserts' }}
+              />
+              </TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {expenses
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                const isItemSelected = isSelected(row.id);
+                return (
+                  <TableRow 
+                    hover 
+                    role="checkbox" 
+                    onClick={(event) => handleClick(event, row.id)}
+                    tabIndex={-1} 
+                    key={row.id}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={isItemSelected}
+                      />
+                    </TableCell>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>{column.format && typeof value === 'number' ? column.format(value) : value.toString() }</TableCell>
+                      )
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={expenses.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
+  );
 }
-export default ListExpenseForm;

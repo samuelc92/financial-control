@@ -1,11 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row, InputGroup, Container } from 'react-bootstrap';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import useStateForm from '../../CustomHook';
 import expenseService from '../../services/expenseService';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import PageHeader from '../shared/PageHeader';
+import TextField from '@material-ui/core/TextField'
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { Button } from "@material-ui/core";
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+        minWidth: 400
+    }
+}))
 function CreateExpenseForm() {
 
+    const classes = useStyles();
     let { expenseId } = useParams();
     let initialState = {
         category: 'DELIVERY',
@@ -60,132 +82,72 @@ function CreateExpenseForm() {
         return () => { setIsfetched(false) };
     });
 
-
     return (
             <Container>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group as={Row}>
-                        <Col xs={4}>
-                            <Form.Label>Category</Form.Label>
-                            <Form.Control as="select" value={inputs.category} name="category" onChange={handleInputChange}>
-                                <option value="BILLS">Bills</option>
-                                <option value="DELIVERY">Delivery</option>
-                                <option value="PUB">Pub</option>
-                                <option value="SHOP">Shop</option>
-                                <option value="SUPERMARKET">Supermarket</option>
-                                <option value="UBER">Uber</option>
-                                <option value="OTHER">Other</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
+                <PageHeader text="Create Expense" />
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel id="categoryLabel" name="categoryLabel">Category</InputLabel>
+                            <Select id="category" name="category" value={inputs.category} label="Category" onChange={handleInputChange}>
+                                <MenuItem value="BILLS">BILLS</MenuItem>
+                                <MenuItem value="DELIVERY">Delivery</MenuItem>
+                                <MenuItem value="PUB">Pub</MenuItem>
+                                <MenuItem value="SHOP">Shop</MenuItem>
+                                <MenuItem value="SUPERMARKET">Supermarket</MenuItem>
+                                <MenuItem value="UBER">Uber</MenuItem>
+                                <MenuItem value="OTHER">Other</MenuItem>
 
-                    <Form.Group as={Row}>
-                        <Col xs={4}>
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control 
-                                id="inputDescription" 
-                                name="description"
-                                value={inputs.description}
-                                placeholder="Description"
-                                onChange={handleInputChange} 
-                            />
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row}>
-                        <Col xs={2}>
-                            <Form.Label>Amount</Form.Label>
-                            <InputGroup className="mb-3">
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text>€</InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <Form.Control 
-                                    id="inputAmount" 
-                                    type="number"
-                                    min="0.00"
-                                    step="any"
-                                    name="amount"
-                                    value={inputs.amount}
-                                    placeholder="Amount"
-                                    onChange={handleInputChange} 
-                                />
-                            </InputGroup>
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row}>
-                        <Col xs={2}>
-                            <Form.Label>Transaction Date</Form.Label>
-                            <Form.Control 
-                                type="date" 
-                                id="inputTransactionDate" 
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                        <TextField id="description" name="description" label="Description" variant="outlined" fullWidth onChange={handleInputChange} value={inputs.description} />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField 
+                        id="amount" 
+                        name="amount" 
+                        label="Amount" 
+                        variant="outlined" 
+                        type="number"
+                        InputProps={{startAdornment: <InputAdornment position="start">€</InputAdornment>,}}
+                        fullWidth 
+                        onChange={handleInputChange} 
+                        value={inputs.amount} />
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                disableToolbar
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="none"
+                                id="transactionDate"
                                 name="transactionDate"
+                                label="Transaction Date"
                                 value={inputs.transactionDate}
-                                onChange={handleInputChange}
+                                onChange={(event) => {console.log(event); setInputs({...inputs, ['transactionDate'] : event})}}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
                             />
-                        </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row}>
-                        <Col md={{ span: 1, offset: 0 }}>
-                            <Button variant="primary" type="submit">Submit</Button>
-                        </Col>
-                        <Col md={{ span: 2, offset: 0 }}>
-                            <Link to="/expense">
-                                <Button variant="secondary">Cancel</Button>
-                            </Link>
-                        </Col>
-                    </Form.Group>
-                </Form>
+                        </MuiPickersUtilsProvider>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Button variant="contained" size="medium" color="primary" onClick={handleSubmit}>
+                            Save
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        <Link to="/expense">
+                            <Button variant="contained" size="medium">
+                               Cancel 
+                            </Button>
+                        </Link>
+                    </Grid>
+                </Grid>
             </Container>
     )
 }
 export default CreateExpenseForm;
-/*class CreateExpenseForm extends React.Component {
-
-    constructor(props) {
-        super(props);
-        console.log(this.props.match.params.expenseId);
-        this.state = {
-            category: 'DELIVERY',
-            amount: 5,
-            description: '',
-            status: 'PAID',
-            transactionDate: new Date().toString()
-        }
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const name = target.name;
-        const value = name === 'amount' ? Number(target.value) : target.value; 
-        this.setState({
-            [name]: value
-        });
-    }
-
-    async handleSubmit(event) {
-        event.preventDefault();
-        console.log(this.state);
-        const response = await fetch("https://localhost:5001/api/Expense", {
-            method: "POST",
-            body: JSON.stringify(this.state),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const responseStatus = await response.status;
-        console.log(response);
-        if (responseStatus === 204) alert('Cadastrado com sucesso!');
-        else alert('Error ao cadastrar uma despesa');
-    }
-
-
-    render() {
-        return (
-        );
-    }
-}*/
