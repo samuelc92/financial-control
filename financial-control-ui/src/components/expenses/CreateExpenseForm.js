@@ -90,7 +90,7 @@ function CreateExpenseForm() {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel id="categoryLabel" name="categoryLabel">Category</InputLabel>
                             <Select id="category" name="category" value={inputs.category} label="Category" onChange={handleInputChange}>
-                                <MenuItem value="BILLS">BILLS</MenuItem>
+                                <MenuItem value="BILLS">Bills</MenuItem>
                                 <MenuItem value="DELIVERY">Delivery</MenuItem>
                                 <MenuItem value="PUB">Pub</MenuItem>
                                 <MenuItem value="SHOP">Shop</MenuItem>

@@ -16,8 +16,8 @@ const putExpense = (data) => {
     return api.put(`expense/${data.id}`, data)
 }
 
-const deleteExpense = (id) => {
-    return api.delete(`expense/${id}`)
+const deleteExpense = (ids) => {
+    return api.delete(`expense?${ids.map((id, index) => `id[${index}]=${id}`).join('&')}`)
 }
 
 export default {

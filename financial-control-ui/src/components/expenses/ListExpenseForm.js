@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import CustomizedToast from "../shared/CustomizedToast";
 
 const columns = [
   { id: "category", label: "Category", minWidth: 170 },
@@ -71,6 +72,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function ListExpenseForm() {
   const classes = useStyles();
   const toolbarClasses = useToolbarStyles();
@@ -79,6 +81,7 @@ export default function ListExpenseForm() {
   const [isFetched, setIsfetched] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [openToast, setOpenToast] = useState(false);
 
   const handleSelectAllClick = (event) => {
     if (!event.target.checked) {
@@ -119,6 +122,19 @@ export default function ListExpenseForm() {
     setPage(0);
   };
 
+  const handleDeleteExpense = (selected) => {
+    if (selected && selected.length > 0) {
+      expenseService
+      .deleteExpense(selected)
+      .then(() => {
+        setOpenToast(true);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+    }
+  };
+
   useEffect(() => {
     if (!isFetched) {
         expenseService
@@ -127,7 +143,7 @@ export default function ListExpenseForm() {
             setExpenses(response.data);
         })
         .catch((e) => {
-            console.log(e);
+          console.log(e);
         })
     }
     setIsfetched(true);
@@ -136,6 +152,7 @@ export default function ListExpenseForm() {
       setIsfetched(false);
     };
   });
+
 
   return (
     <Paper className={classes.root}>
@@ -162,7 +179,7 @@ export default function ListExpenseForm() {
         {selected.length > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="delete">
-              <DeleteIcon />
+              <DeleteIcon onClick={() => handleDeleteExpense(selected)}/>
             </IconButton>
           </Tooltip>
         ) : (
