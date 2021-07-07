@@ -11,6 +11,6 @@ namespace FinancialControl.Api.Expenses.Services.Interfaces
         IEnumerable<Expense> Get(Dictionary<string, string> filters);
         void Pay(string id);
         dynamic Resume(DateTime startDate, DateTime endDate);
-        void Delete(string id);
+        void Delete(IEnumerable<string> ids);
     }
 }

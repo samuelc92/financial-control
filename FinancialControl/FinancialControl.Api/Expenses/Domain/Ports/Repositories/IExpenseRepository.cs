@@ -19,5 +19,6 @@ namespace FinancialControl.Api.Expenses.Domain.Ports.Repositories
         dynamic Resume(DateTime startDate, DateTime endDate);
         
         void Delete(string id);
+        void Delete(IEnumerable<string> id);
     }
 }

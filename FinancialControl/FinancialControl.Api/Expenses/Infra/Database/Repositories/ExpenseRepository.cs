@@ -32,6 +32,9 @@ namespace FinancialControl.Api.Expenses.Infra.Database.Repositories
 
         public void Delete(string id) =>
             _expenses.FindOneAndDelete(p => p.Id.Equals(id));
+        
+        public void Delete(IEnumerable<string> ids) =>
+            _expenses.DeleteMany(p => ids.Contains(p.Id));
 
         public IEnumerable<Expense> Get(Dictionary<string, string> filters) =>
             _expenses.Find(MongoDynamicFilter.Filter<ExpenseMapper>(typeof(ExpenseMapper), filters))

@@ -52,8 +52,8 @@ namespace FinancialControl.Api.Controllers
             return NoContent();
         }
         
-        [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] string id)
+        [HttpDelete]
+        public IActionResult Delete([FromQuery] IEnumerable<string> id)
         {
             _logger.LogInformation($@"Delete Expense: {id}");
             _service.Delete(id);

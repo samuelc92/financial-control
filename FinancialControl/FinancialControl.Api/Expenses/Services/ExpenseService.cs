@@ -34,7 +34,7 @@ namespace FinancialControl.Api.Expenses.Services
         public dynamic Resume(DateTime startDate, DateTime endDate) =>
             _repository.Resume(startDate.Date, endDate.Date);
 
-        public void Delete(string id) =>
-            _repository.Delete(id);
+        public void Delete(IEnumerable<string> ids) =>
+            _repository.Delete(ids);
     }
 }
