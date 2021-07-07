@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import useStateForm from '../../CustomHook';
 import expenseService from '../../services/expenseService';
+import { useToastContext } from "../../contexts/ToastContext";
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -41,10 +42,10 @@ function CreateExpenseForm() {
         expenseService
         .postExpense(inputs)
         .then ((response) => {
-            alert('Cadastrado com sucesso!');
+            showToast({type: 'success', show: true, title: 'Expense Created Successfull', message: 'Expense has been created.'});
         })
         .catch((e) => { 
-            alert('Error ao cadastrar uma despesa');
+            showToast({type: 'error', show: true, title: 'Expense Created Error', message: 'Error on creating an expense.'});
             console.log(e);
         })
     };
@@ -64,6 +65,7 @@ function CreateExpenseForm() {
 
     const {setInputs, inputs, handleInputChange, handleSubmit} = useStateForm(initialState, expenseId ? put : post);
     const [isFetched, setIsfetched] = useState(false);
+    const [toastState, toastDispatch, showToast] = useToastContext();
     let history = useHistory();
 
     useEffect(() => {

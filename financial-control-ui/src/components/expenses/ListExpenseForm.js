@@ -19,7 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import CustomizedToast from "../shared/CustomizedToast";
+import { useToastContext } from "../../contexts/ToastContext";
 
 const columns = [
   { id: "category", label: "Category", minWidth: 170 },
@@ -81,7 +81,7 @@ export default function ListExpenseForm() {
   const [isFetched, setIsfetched] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [openToast, setOpenToast] = useState(false);
+  const [toastState, toastDispatch, showToast] = useToastContext();
 
   const handleSelectAllClick = (event) => {
     if (!event.target.checked) {
@@ -127,10 +127,11 @@ export default function ListExpenseForm() {
       expenseService
       .deleteExpense(selected)
       .then(() => {
-        setOpenToast(true);
+        showToast({type: 'success', show: true, title: 'Expense Deleted Successfull', message: 'Expense has been deleted.'});
       })
       .catch((e) => {
         console.log(e);
+        showToast({type: 'error', show: true, title: 'Expense Deleted Error', message: 'Error on deleting an expense.'});
       })
     }
   };
