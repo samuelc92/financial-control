@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Icon from '@material-ui/core/Icon';
 import { useToastContext } from "../../contexts/ToastContext";
 
 const columns = [
@@ -157,15 +158,6 @@ export default function ListExpenseForm() {
 
   return (
     <Paper className={classes.root}>
-      <Grid container direction="row" justify="flex-end" alignItems="baseline">
-        <Grid item>
-          <Link to="/expense/create">
-            <Button variant="contained" size="medium" color="primary" className={classes.buttons}>
-              Insert
-            </Button>
-          </Link>
-        </Grid>
-      </Grid>
       <Toolbar className={clsx(classes.root, { [toolbarClasses.highlight]: selected.length > 0 })}>
         {selected.length > 0 ? (
           <Typography className={toolbarClasses.title} color="inherit" variant="subtitle1" component="div">
@@ -176,6 +168,14 @@ export default function ListExpenseForm() {
             Expenses
           </Typography>
         )}
+
+        <Tooltip title="Add">
+          <Link to="/expense/create">
+            <IconButton aria-label="add_circle">
+              <Icon color="primary">add_circle</Icon>
+            </IconButton>
+          </Link>
+        </Tooltip>
 
         {selected.length > 0 ? (
           <Tooltip title="Delete">
@@ -255,3 +255,15 @@ export default function ListExpenseForm() {
     </Paper>
   );
 }
+
+/*
+      <Grid container direction="row" justify="flex-end" alignItems="baseline">
+        <Grid item>
+          <Link to="/expense/create">
+            <Button variant="contained" size="medium" color="primary" className={classes.buttons}>
+              Insert
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
+*/
