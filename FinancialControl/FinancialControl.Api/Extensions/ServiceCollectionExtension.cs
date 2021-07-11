@@ -39,6 +39,7 @@ namespace FinancialControl.Api.Extensions
             service.AddScoped<IExpenseService, ExpenseService>();
             service.AddScoped<IScheduleExpenseService, ScheduleExpenseService>();
             service.AddScoped<ISalaryRepository, SalaryRepository>();
+            service.AddScoped<IExpenseReportRepository, ExpenseReportRepository>();
         }
     }
 }

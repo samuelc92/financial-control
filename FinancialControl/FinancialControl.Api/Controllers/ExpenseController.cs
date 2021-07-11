@@ -60,18 +60,5 @@ namespace FinancialControl.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("Resume")]
-        public IActionResult Resume([FromQuery] DateTime? startDateTime, [FromQuery] DateTime? endDateTime)
-        {
-            var year = DateTimeUtils.GetCurrentYear();
-            var month = DateTimeUtils.GetCurrentMonth();
-            startDateTime = startDateTime.HasValue
-                ? startDateTime
-                : new DateTime(year, month, 1);
-            endDateTime = endDateTime.HasValue
-                ? endDateTime
-                : new DateTime(year, month, DateTime.DaysInMonth(year, month));
-            return Ok(_service.Resume(startDateTime.Value, endDateTime.Value));
-        }
     }
 }

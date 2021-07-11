@@ -30,9 +30,6 @@ namespace FinancialControl.Api.Expenses.Infra.Database.Repositories
         public Expense GetById(string id) =>
             _expenses.Find(p => p.Id.Equals(id)).FirstOrDefault()?.ConvertToExpense();
 
-        public void Delete(string id) =>
-            _expenses.FindOneAndDelete(p => p.Id.Equals(id));
-        
         public void Delete(IEnumerable<string> ids) =>
             _expenses.DeleteMany(p => ids.Contains(p.Id));
 
@@ -50,28 +47,5 @@ namespace FinancialControl.Api.Expenses.Infra.Database.Repositories
             return expensesMapper.Select(p => p.ConvertToExpense()).ToList();
         }
 
-        public dynamic Resume(DateTime startDate, DateTime endDate)
-        {
-            var totalByCategory= GetTotalByCategoryInPeriod(startDate, endDate); 
-            var total = GetTotalAmountInPeriod(startDate, endDate);
-            return new
-            {
-                Resume = totalByCategory,
-                Total = Math.Round(total, 2) 
-            };
-        }
-
-        private dynamic GetTotalByCategoryInPeriod(DateTime startDate, DateTime endDate) =>
-            _expenses.AsQueryable()
-                .Where(p => p.TransactionDate >= startDate && p.TransactionDate <= endDate)
-                .Select(p => new {p.Category, p.Amount})
-                .GroupBy(p => p.Category,
-                    (k, s) => new {Category = k, Total = s.Sum(p => p.Amount)})
-                .ToList();
-
-        private double GetTotalAmountInPeriod(DateTime startDate, DateTime endDate) =>
-            _expenses.AsQueryable()
-                .Where(p => p.TransactionDate >= startDate && p.TransactionDate <= endDate)
-                .Sum(p => p.Amount);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FinancialControl.Api.Expenses.Domain.Models;
 using FinancialControl.Api.Expenses.Domain.Ports.Repositories;
 using FinancialControl.Api.Expenses.Services.Interfaces;
@@ -30,9 +29,6 @@ namespace FinancialControl.Api.Expenses.Services
             expense.Pay();
             _repository.Update(expense);
         }
-
-        public dynamic Resume(DateTime startDate, DateTime endDate) =>
-            _repository.Resume(startDate.Date, endDate.Date);
 
         public void Delete(IEnumerable<string> ids) =>
             _repository.Delete(ids);
