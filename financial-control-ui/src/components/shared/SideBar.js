@@ -6,9 +6,10 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Company from '@material-ui/icons/Business';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Clock from '@material-ui/icons/WatchLater';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   list: {
@@ -28,10 +29,12 @@ export default function SideBar({toggleDrawer, open}) {
       onKeyDown={toggleDrawer}
     >
       <List>                  
-          <ListItem button key="Company">
-            <ListItemIcon><Company /></ListItemIcon>
-            <ListItemText primary="Company" />
-          </ListItem>
+          <Link to="/expense" placement="bottom-start">
+            <ListItem button key="Expense">
+              <ListItemIcon><AddCircleOutlineIcon  /></ListItemIcon>
+              <ListItemText primary="Expense" />
+            </ListItem>
+          </Link>
           <ListItem button key="TimePoint">
             <ListItemIcon><Clock /></ListItemIcon>
             <ListItemText primary="Time Point" />

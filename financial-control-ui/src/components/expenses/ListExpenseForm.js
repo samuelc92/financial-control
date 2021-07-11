@@ -12,8 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TablePagination from "@material-ui/core/TablePagination";
 import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import { Button, lighten, Typography } from "@material-ui/core";
+import { lighten, Typography } from "@material-ui/core";
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -75,6 +74,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 
 export default function ListExpenseForm() {
+
   const classes = useStyles();
   const toolbarClasses = useToolbarStyles();
   const [page, setPage] = useState(0);
@@ -255,15 +255,3 @@ export default function ListExpenseForm() {
     </Paper>
   );
 }
-
-/*
-      <Grid container direction="row" justify="flex-end" alignItems="baseline">
-        <Grid item>
-          <Link to="/expense/create">
-            <Button variant="contained" size="medium" color="primary" className={classes.buttons}>
-              Insert
-            </Button>
-          </Link>
-        </Grid>
-      </Grid>
-*/

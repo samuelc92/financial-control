@@ -5,7 +5,7 @@ import { useToastContext } from '../../contexts/ToastContext';
 
 export default function CustomizedToast({severity, text, opened}) {
 
-    const [state, reducer, showToast] = useToastContext ();
+    const [state, reducer, showToast] = useToastContext();
     const [position, setPosition] = useState({
 
       vertical: 'top',
