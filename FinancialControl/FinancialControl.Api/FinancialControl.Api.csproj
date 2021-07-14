@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+      <PackageReference Include="Serilog.AspNetCore" Version="3.4.1-dev-00188" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="4.0.0-dev-00051" />
+      <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Domain\Expenses\ViewModels\ExpenseViewModel.cs" />
+      <Compile Remove="Domain\Expenses\ViewModels\ScheduleExpenseViewModel.cs" />
+      <Compile Remove="Domain\Expenses\ViewModels\**" />
+      <Compile Remove="Controllers\WeatherForecastController.cs" />
+      <Compile Remove="WeatherForecast.cs" />
+      <Compile Remove="BankAccount\Domain\Models.cs" />
+      <Compile Remove="Domain\Expenses\**" />
+      <Compile Remove="Domain\**" />
+      <Compile Remove="Income\Infra\Database\FinanceControlDatabaseSettings.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Domain\Expenses\ViewModels\**" />
+      <EmbeddedResource Remove="Domain\Expenses\**" />
+      <EmbeddedResource Remove="Domain\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Domain\Expenses\ViewModels\**" />
+      <None Remove="Domain\Expenses\**" />
+      <None Remove="Domain\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Domain\Expenses\ViewModels\**" />
+      <Content Remove="Domain\Expenses\**" />
+      <Content Remove="Domain\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Expenses\Domain" />
+    </ItemGroup>
+
+
+</Project>

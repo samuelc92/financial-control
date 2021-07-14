@@ -1,14 +1,7 @@
-bin/
-obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
-.idea/
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-financial-control-ui/node_modules
+/node_modules
 /.pnp
 .pnp.js
 
@@ -16,7 +9,7 @@ financial-control-ui/node_modules
 /coverage
 
 # production
-financial-control-ui/build
+/build
 
 # misc
 .DS_Store

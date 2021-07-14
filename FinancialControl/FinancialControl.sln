@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialControl.Api", "FinancialControl.Api\FinancialControl.Api.csproj", "{E39C96D2-323E-4D4D-90B5-0E2ECBB9B7B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialControl.Test", "FinancialControl.Test\FinancialControl.Test.csproj", "{8C455B71-FACF-4802-9FE9-08E44BB3E77C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E39C96D2-323E-4D4D-90B5-0E2ECBB9B7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E39C96D2-323E-4D4D-90B5-0E2ECBB9B7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E39C96D2-323E-4D4D-90B5-0E2ECBB9B7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E39C96D2-323E-4D4D-90B5-0E2ECBB9B7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C455B71-FACF-4802-9FE9-08E44BB3E77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C455B71-FACF-4802-9FE9-08E44BB3E77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C455B71-FACF-4802-9FE9-08E44BB3E77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C455B71-FACF-4802-9FE9-08E44BB3E77C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
