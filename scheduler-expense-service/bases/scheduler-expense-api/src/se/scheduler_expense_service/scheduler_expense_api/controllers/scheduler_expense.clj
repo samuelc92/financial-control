@@ -4,13 +4,6 @@
             [se.scheduler-expense-service.scheduler-expense.spec :as spec]
             [clojure.spec.alpha :as s]))
 
-(defn hello 
-  [req]
-  (println req)
-  (get-in req [:params :id])
-  (scheduler/get-by-id (-> req :application/component :database)
-                       (get-in req [:params :id])))
-
 (defn- handler
   ([status body]
    {:status (or status 404)
@@ -18,18 +11,19 @@
   ([status] 
    (handler status nil)))
 
+(defn get-by-id
+  [req]
+  (println req)
+  ;;(get-in re [:params :id])
+  (handler 200 (scheduler/get-by-id (-> req :application/component :database)
+                       (get-in req [:params :id]))))
+
 (defn register 
   [req]
   (let [scheduler (-> req (get-in [:body]))]
     (if (s/valid? spec/scheduler-expense scheduler)
       (->> scheduler 
-          (scheduler/save (-> req :application/component :database :datasource))
+          (scheduler/save (-> req :application/component :database))
           (handler 200))
       (handler 400 {:error {:body ["invalid request body."]}})))
 )
-
-  ;;(let [scheduler (-> req (get-in [:body]))]
-  ;;  (println scheduler)
-  ;;  (if (s/valid? spec/scheduler-expense scheduler)
-  ;;    (handler 200 scheduler)
-  ;;    (handler 400 {:error {:body ["invalid request body."]}}))))

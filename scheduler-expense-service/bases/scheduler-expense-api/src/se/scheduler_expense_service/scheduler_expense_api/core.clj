@@ -1,6 +1,7 @@
 (ns se.scheduler-expense-service.scheduler-expense-api.core
   (:require [compojure.core :refer [let-routes GET POST]]
             [compojure.route :as route]
+            [compojure.coercions :refer [as-int]]
             [ring.util.response :as resp]
             [ring.middleware.defaults :as ring-defaults]
             [ring.middleware.json :as js]
@@ -28,8 +29,8 @@
 (defn my-handler 
   [application]
   (let-routes [wrap (middleware-stack application)]
-    (GET  "/:id"             []  (wrap #'core/hello))
-    (POST "/api/scheduler"   []  (wrap #'core/register))))
+    (GET  "/:id"             [id :<< as-int]  (wrap #'core/get-by-id))
+    (POST "/api/scheduler"   []               (wrap #'core/register))))
 
 ;; This is the piece that combines the generic web-server component with
 ;; your application-specific app-state component, and any dependencies

@@ -13,5 +13,5 @@
 (def scheduler-expense
   (ds/spec {:name :core/scheduler-expense
             :spec {:amount int? 
-                   (ds/opt :dueDay) integer? 
-                   :isAutoDebit boolean?}}))
+                   (ds/opt :due_day) integer? 
+                   :is_auto_debit boolean?}}))

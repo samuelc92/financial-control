@@ -19,17 +19,21 @@
                                 "components/database/resources"
                                 "bases/scheduler-expense-api/src"
                                 "bases/scheduler-expense-api/resources"]
-                  :extra-deps {org.clojure/clojure          {:mvn/version "1.10.1"}
-                               org.clojure/tools.deps.alpha {:mvn/version "0.8.695"}
+                  :extra-deps {org.clojure/clojure               {:mvn/version "1.10.1"}
+                               org.clojure/tools.deps.alpha      {:mvn/version "0.8.695"}
 
-                               com.stuartsierra/component   {:mvn/version "1.0.0"}
-                               metosin/spec-tools           {:mvn/version "0.6.1"}
-                               com.novemberain/monger       {:mvn/version "3.1.0"}
+                               com.stuartsierra/component        {:mvn/version "1.0.0"}
+                               metosin/spec-tools                {:mvn/version "0.6.1"}
+                               com.novemberain/monger            {:mvn/version "3.1.0"}
+                               org.postgresql/postgresql         {:mvn/version "42.2.23"}
+                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.689"}
+
+                               clojure.java-time/clojure.java-time {:mvn/version "0.3.3"}
                                
-                               compojure/compojure          {:mvn/version "1.6.2"}
-                               ring/ring                    {:mvn/version "1.9.2"}
-                               ring/ring-defaults           {:mvn/version "0.3.2"} 
-                               ring/ring-json               {:mvn/version "0.5.1"} 
+                               compojure/compojure               {:mvn/version "1.6.2"}
+                               ring/ring                         {:mvn/version "1.9.2"}
+                               ring/ring-defaults                {:mvn/version "0.3.2"} 
+                               ring/ring-json                    {:mvn/version "0.5.1"} 
                               }}
 
             :test {:extra-paths []}
