@@ -1,0 +1,45 @@
+{:polylith {:vcs "git"
+            :top-namespace "se.scheduler-expense-service"
+            :interface-ns "interface"
+            :default-profile-name "default"
+            :compact-views #{}
+            :release-tag-pattern "v[0-9]*"
+            :stable-tag-pattern "stable-*"
+            :project-to-alias {"development" "dev"}
+            :ns-to-lib {}}
+
+ :aliases  {:dev {:extra-paths ["development/src"
+                                "components/scheduler-expense/src"
+                                "components/scheduler-expense/resources"
+                                "components/web-server/src"
+                                "components/web-server/resources"
+                                "components/app-state/src"
+                                "components/app-state/resources"
+                                "components/database/src"
+                                "components/database/resources"
+                                "bases/scheduler-expense-api/src"
+                                "bases/scheduler-expense-api/resources"]
+                  :extra-deps {org.clojure/clojure               {:mvn/version "1.10.1"}
+                               org.clojure/tools.deps.alpha      {:mvn/version "0.8.695"}
+
+                               com.stuartsierra/component        {:mvn/version "1.0.0"}
+                               metosin/spec-tools                {:mvn/version "0.6.1"}
+                               com.novemberain/monger            {:mvn/version "3.1.0"}
+                               org.postgresql/postgresql         {:mvn/version "42.2.23"}
+                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.689"}
+
+                               clojure.java-time/clojure.java-time {:mvn/version "0.3.3"}
+                               
+                               compojure/compojure               {:mvn/version "1.6.2"}
+                               ring/ring                         {:mvn/version "1.9.2"}
+                               ring/ring-defaults                {:mvn/version "0.3.2"} 
+                               ring/ring-json                    {:mvn/version "0.5.1"} 
+                              }}
+
+            :test {:extra-paths []}
+
+            :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
+                   :extra-deps {polyfy/polylith
+                                {:git/url   "https://github.com/polyfy/polylith"
+                                 :sha       "bb594393e03bd97a03109775cb16815594a13748"
+                                 :deps/root "projects/poly"}}}}}
