@@ -11,6 +11,12 @@
     (jtime/local-date format-date value)
     value))
 
+(defn fix-date
+  [scheduler]
+  (-> scheduler
+    (assoc :start_at (string-to-date (:start_at scheduler)))
+    (assoc :end_at (string-to-date (:end_at scheduler)))))
+
 (defn save 
   [db scheduler]
     (println scheduler)
@@ -21,9 +27,11 @@
 
 (defn get-by-id 
   [db id] 
-  (println id)
   (sql/get-by-id (db) :scheduler (Integer/parseInt id) {:builder-fn rs/as-unqualified-lower-maps}))
 
+(defn get-by-period
+  [db start_at end_at]
+  (sql/query (db) ["select * from public.scheduler s where s.start_at <= ? AND s.end_at >= ?" start_at end_at] {:builder-fn rs/as-unqualified-lower-maps}))
 ;; CREATE TABLE public.scheduler (
 ;; id serial NOT NULL, 
 ;; description varchar(100) NULL,
