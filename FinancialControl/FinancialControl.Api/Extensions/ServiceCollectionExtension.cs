@@ -24,7 +24,10 @@ namespace FinancialControl.Api.Extensions
                 sp.GetRequiredService<IOptions<FinanceControlDatabaseSettings>>().Value);
             var financeControlDatabaseSettings = configuration.GetSection(nameof(FinanceControlDatabaseSettings))
                 .Get<FinanceControlDatabaseSettings>();
-            service.AddSingleton<IMongoClient>(c => new MongoClient(financeControlDatabaseSettings.ConnectionString));
+            var server = configuration["DatabaseServer"];
+            var connectionString = $"mongodb://{server}:27017";
+            //service.AddSingleton<IMongoClient>(c => new MongoClient(financeControlDatabaseSettings.ConnectionString));
+            service.AddSingleton<IMongoClient>(c => new MongoClient(connectionString));
         }
 
         public static void AddRepository(this IServiceCollection service)

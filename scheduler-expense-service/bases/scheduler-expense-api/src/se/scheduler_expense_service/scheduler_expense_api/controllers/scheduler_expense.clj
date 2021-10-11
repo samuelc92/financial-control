@@ -2,6 +2,7 @@
   "The controller of scheduler expense"
   (:require [se.scheduler-expense-service.scheduler-expense.interface :as scheduler]
             [se.scheduler-expense-service.scheduler-expense.spec :as spec]
+            [se.scheduler-expense-service.expense-api.interface :as expenses]
             [clojure.spec.alpha :as s]
             [java-time :as jtime]))
 
@@ -32,6 +33,17 @@
       (handler 400 {:error {:body ["Invalid request body."]}})))
 )
 
+(defn send-request
+  [body]
+  (try
+    (let [bodyCount (count body)]
+      (loop [index 0]
+        (when (< index bodyCount)
+          (expenses/create-expense (get body index))
+          (recur (inc index)))))
+  (catch Exception e
+    (println e))))
+
 ;; TODO: Fix end_at value
 (defn process
   [req]
@@ -41,5 +53,5 @@
         db (get-database-from-request req)
         result (scheduler/get-by-period db start_at end_at)]
     (println result)
+    (send-request result)
     (handler 204)))
-
