@@ -20,7 +20,7 @@
 
 (def ^:private my-db
   "Postgres database connection spec"
-  {:dbtype "postgresql" :host "192.168.1.48" :user "postgres" :password "postgres" :dbname "postgres"})
+  {:dbtype "postgresql" :host "127.0.0.1" :user "postgres" :password "postgres" :dbname "postgres"})
 
 (defn create 
   []

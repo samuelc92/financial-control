@@ -34,6 +34,7 @@
   (sql/query (db) ["select * from public.scheduler s where s.start_at <= ? AND s.end_at >= ?" start_at end_at] {:builder-fn rs/as-unqualified-lower-maps}))
 ;; CREATE TABLE public.scheduler (
 ;; id serial NOT NULL, 
+;; category varchar(100) NULL,
 ;; description varchar(100) NULL,
 ;; amount numeric NOT NULL,
 ;; due_day int4 NULL,

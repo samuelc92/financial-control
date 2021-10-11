@@ -17,6 +17,8 @@
                                 "components/app-state/resources"
                                 "components/database/src"
                                 "components/database/resources"
+                                "components/expense-api/src"
+                                "components/expense-api/resources"
                                 "bases/scheduler-expense-api/src"
                                 "bases/scheduler-expense-api/resources"]
                   :extra-deps {org.clojure/clojure               {:mvn/version "1.10.1"}
@@ -29,11 +31,13 @@
                                com.github.seancorfield/next.jdbc {:mvn/version "1.2.689"}
 
                                clojure.java-time/clojure.java-time {:mvn/version "0.3.3"}
+                               org.clojure/data.json             {:mvn/version "2.4.0"}
                                
                                compojure/compojure               {:mvn/version "1.6.2"}
                                ring/ring                         {:mvn/version "1.9.2"}
                                ring/ring-defaults                {:mvn/version "0.3.2"} 
                                ring/ring-json                    {:mvn/version "0.5.1"} 
+                               clj-http/clj-http                 {:mvn/version "3.12.3"}
                               }}
 
             :test {:extra-paths []}
