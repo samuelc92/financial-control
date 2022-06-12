@@ -18,7 +18,9 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
 
   public override async Task<AddExpense> HandleAsync(AddExpense addExpense, CancellationToken cancellationToken = default(CancellationToken))
   {
-    _uow.Add(new Expense(addExpense.Description, addExpense.Amount));
+    System.Console.WriteLine($"AddExpense Command Id: {addExpense.Id}");
+
+    _uow.Add(new Expense(addExpense.Category, addExpense.Amount, addExpense.TransactionDate, addExpense.Status, addExpense.Description));
 
     await _uow.SaveChangesAsync(cancellationToken);
 
