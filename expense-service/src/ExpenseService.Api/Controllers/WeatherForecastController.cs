@@ -8,8 +8,6 @@ namespace ExpenseService.Api.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private readonly IAmACommandProcessor _commandProcessor;
-
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -17,10 +15,9 @@ public class WeatherForecastController : ControllerBase
 
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IAmACommandProcessor commandProcessor)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger)
     {
         _logger = logger;
-        _commandProcessor = commandProcessor;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -33,12 +30,5 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
-    }
-
-    [HttpPost(Name = "Test")]
-    public async Task<ActionResult<AddExpense>> Post(AddExpense addExpense)
-    {
-        await _commandProcessor.SendAsync(addExpense);
-        return Ok(addExpense);
     }
 }

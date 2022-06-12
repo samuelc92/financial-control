@@ -1,6 +1,5 @@
 using Paramore.Brighter;
 using Paramore.Brighter.Extensions.DependencyInjection;
-//using Paramore.Brighter.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
