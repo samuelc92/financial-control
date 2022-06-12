@@ -1,5 +1,6 @@
 
 using ExpenseService.Api.Ports.Requests;
+using ExpenseService.Api.Ports.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Paramore.Brighter;
 using Paramore.Darker;
@@ -19,15 +20,22 @@ public class ExpensesController : ControllerBase
     _queryProcessor = queryProcessor;
   }
 
-  [HttpPost(Name = "PostExpense")]
-  public async Task<ActionResult<AddExpense>> Post(AddExpense addExpense)
+  [Route("{id}")]
+  [HttpGet(Name = "GetExpense")]
+  public async Task<ActionResult<FindExpenseResult>> Get(int id)
   {
-      await _commandProcessor.SendAsync(addExpense);
-
-      var addedExpense = await _queryProcessor.ExecuteAsync(new FindExpenseByDescription(addExpense.Description));
+      var addedExpense = await _queryProcessor.ExecuteAsync(new FindExpenseById(id));
 
       if (addedExpense is null) return new NotFoundResult();
 
       return Ok(addedExpense);
+  }
+
+
+  [HttpPost(Name = "PostExpense")]
+  public async Task<ActionResult<FindExpenseResult>> Post(AddExpense addExpense)
+  {
+      await _commandProcessor.SendAsync(addExpense);
+      return new NoContentResult();
   }
 }

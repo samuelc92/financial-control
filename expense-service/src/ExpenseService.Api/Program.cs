@@ -29,7 +29,7 @@ builder.Services
         options.HandlerLifetime = ServiceLifetime.Scoped;
         options.QueryProcessorLifetime = ServiceLifetime.Scoped;
     })
-    .AddHandlersFromAssemblies(typeof(FindExpenseByDescriptionHandler).Assembly);
+    .AddHandlersFromAssemblies(typeof(FindExpenseByIdHandler).Assembly);
 
 var app = builder.Build();
 

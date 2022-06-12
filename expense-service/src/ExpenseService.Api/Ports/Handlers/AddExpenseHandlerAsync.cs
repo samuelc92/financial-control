@@ -2,7 +2,6 @@
 using ExpenseService.Api.Domain;
 using ExpenseService.Api.Infrastructure.DataAccess;
 using ExpenseService.Api.Ports.Requests;
-using Microsoft.EntityFrameworkCore;
 using Paramore.Brighter;
 
 namespace ExpenseService.Api.Ports.Handlers;
