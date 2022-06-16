@@ -1,8 +1,11 @@
 using ExpenseService.Api.Infrastructure.DataAccess;
 using ExpenseService.Api.Ports.Handlers;
 using Microsoft.EntityFrameworkCore;
+using Paramore.Brighter;
 using Paramore.Brighter.Extensions.DependencyInjection;
+using Paramore.Brighter.MessagingGateway.RMQ;
 using Paramore.Darker.AspNetCore;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +23,29 @@ builder.Services.AddDbContext<ExpenseDbContext>(
 );
 
 builder.Services
-  .AddBrighter()
+  .AddBrighter(options =>
+    {
+        options.HandlerLifetime = ServiceLifetime.Scoped;
+        options.CommandProcessorLifetime = ServiceLifetime.Scoped;
+        options.MapperLifetime = ServiceLifetime.Scoped;
+    })
+  .UseExternalBus(new RmqProducerRegistryFactory(
+    new RmqMessagingGatewayConnection
+    {
+        AmpqUri = new AmqpUriSpecification(new Uri("amqp://guest:guest@localhost:5672")),
+        Exchange = new Exchange("default")
+    },
+    new RmqPublication[]{
+            new RmqPublication
+        {
+            Topic = new RoutingKey("create-expense"),
+            MaxOutStandingMessages = 5,
+            MaxOutStandingCheckIntervalMilliSeconds = 500,
+            WaitForConfirmsTimeOutInMilliseconds = 1000,
+            MakeChannels = OnMissingChannel.Create
+        }}
+    ).Create()
+  )
   .AutoFromAssemblies();
 
 builder.Services

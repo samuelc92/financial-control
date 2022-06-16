@@ -8,12 +8,14 @@ namespace ExpenseService.Api.Ports.Handlers;
 
 public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
 {
+  private readonly IAmACommandProcessor _postBox;
 
   private readonly ExpenseDbContext _uow;
 
-  public AddExpenseHandlerAsync(ExpenseDbContext uow)
+  public AddExpenseHandlerAsync(ExpenseDbContext uow, IAmACommandProcessor postBox)
   {
     _uow = uow;
+    _postBox = postBox;
   }
 
   public override async Task<AddExpense> HandleAsync(AddExpense addExpense, CancellationToken cancellationToken = default(CancellationToken))
@@ -22,6 +24,7 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
 
     _uow.Add(new Expense(addExpense.Category, addExpense.Amount, addExpense.TransactionDate, addExpense.Status, addExpense.Description));
 
+    await _postBox.PostAsync(new ExpenseCreatedEvent(addExpense.Id, addExpense.Category.ToString()));
     await _uow.SaveChangesAsync(cancellationToken);
 
     return await base.HandleAsync(addExpense, cancellationToken);
