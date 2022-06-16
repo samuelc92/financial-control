@@ -3,7 +3,11 @@ using ExpenseService.Api.Ports.Handlers;
 using Microsoft.EntityFrameworkCore;
 using Paramore.Brighter;
 using Paramore.Brighter.Extensions.DependencyInjection;
+using Paramore.Brighter.Extensions.Hosting;
 using Paramore.Brighter.MessagingGateway.RMQ;
+using Paramore.Brighter.Outbox.Sqlite;
+using Paramore.Brighter.Sqlite;
+using Paramore.Brighter.Sqlite.EntityFrameworkCore;
 using Paramore.Darker.AspNetCore;
 using RabbitMQ.Client;
 
@@ -46,6 +50,13 @@ builder.Services
         }}
     ).Create()
   )
+  .UseSqliteOutbox(new SqliteConfiguration("Filename=expenses.db;Cache=Shared", "Outbox"), typeof(SqliteConnectionProvider), ServiceLifetime.Singleton)
+  .UseSqliteTransactionConnectionProvider(typeof(SqliteEntityFrameworkConnectionProvider<ExpenseDbContext>), ServiceLifetime.Scoped)
+  .UseOutboxSweeper(options =>
+  {
+    options.TimerInterval = 5;
+    options.MinimumMessageAge = 5000;
+  })
   .AutoFromAssemblies();
 
 builder.Services
