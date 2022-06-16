@@ -8,7 +8,7 @@ public class ExpenseCreatedEventMapper : IAmAMessageMapper<ExpenseCreatedEvent>
 {
     public Message MapToMessage(ExpenseCreatedEvent request)
     {
-        var header = new MessageHeader(messageId: request.Id, topic: "expense-created", messageType: MessageType.MT_EVENT);
+        var header = new MessageHeader(messageId: request.Id, topic: "ExpenseCreated", messageType: MessageType.MT_EVENT, contentType: "application/json");
         var body = new MessageBody(JsonSerializer.Serialize(request, new JsonSerializerOptions(JsonSerializerDefaults.General)));
         return new Message(header, body);
     }

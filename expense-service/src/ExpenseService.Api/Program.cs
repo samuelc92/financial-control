@@ -42,7 +42,7 @@ builder.Services
     new RmqPublication[]{
             new RmqPublication
         {
-            Topic = new RoutingKey("create-expense"),
+            Topic = new RoutingKey("ExpenseCreated"),
             MaxOutStandingMessages = 5,
             MaxOutStandingCheckIntervalMilliSeconds = 500,
             WaitForConfirmsTimeOutInMilliseconds = 1000,
