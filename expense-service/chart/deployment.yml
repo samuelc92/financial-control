@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: expense-service
+  labels:
+    app: expense-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: expense-service
+  template:
+    metadata:
+      labels:
+        app: expense-service
+    spec:
+      containers:
+      - name: expense
+        image: expense-service
+        imagePullPolicy: Never
