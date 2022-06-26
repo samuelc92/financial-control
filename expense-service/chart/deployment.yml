@@ -1,20 +1,32 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: expense-service
+  name: expense-api
   labels:
-    app: expense-service
+    app: expense-api
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: expense-service
+      app: expense-api
   template:
     metadata:
       labels:
-        app: expense-service
+        app: expense-api
     spec:
       containers:
       - name: expense
-        image: expense-service
+        image: expense-image
         imagePullPolicy: Never
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: exp-service
+spec:
+  selector:
+    app: expense-api
+  ports:
+    - port: 5092
+      targetPort: 5092
+  type: LoadBalancer
