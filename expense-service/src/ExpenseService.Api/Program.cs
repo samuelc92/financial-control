@@ -15,41 +15,51 @@ using RabbitMQ.Client;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddCors(options =>
+{
+  options.AddDefaultPolicy(
+		policy =>
+		{
+			policy 
+			.AllowAnyOrigin()
+			.AllowAnyHeader()
+			.AllowAnyMethod();
+		});
+});
 builder.Services.AddControllers()
-    .AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+	.AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ExpenseDbContext>(
-    builder =>
-    {
-        builder.UseSqlite("Filename=expenses.db;Cache=Shared");
-    }
+	builder =>
+	{
+		builder.UseSqlite("Filename=expenses.db;Cache=Shared");
+	}
 );
 
 builder.Services
-  .AddBrighter(options =>
-    {
-        options.HandlerLifetime = ServiceLifetime.Scoped;
-        options.CommandProcessorLifetime = ServiceLifetime.Scoped;
-        options.MapperLifetime = ServiceLifetime.Scoped;
-    })
+	.AddBrighter(options =>
+  {
+		options.HandlerLifetime = ServiceLifetime.Scoped;
+		options.CommandProcessorLifetime = ServiceLifetime.Scoped;
+		options.MapperLifetime = ServiceLifetime.Scoped;
+  })
   .UseExternalBus(new RmqProducerRegistryFactory(
     new RmqMessagingGatewayConnection
     {
-        AmpqUri = new AmqpUriSpecification(new Uri("amqp://guest:guest@localhost:5672")),
-        Exchange = new Exchange("default")
+      AmpqUri = new AmqpUriSpecification(new Uri("amqp://guest:guest@localhost:5672")),
+      Exchange = new Exchange("default")
     },
     new RmqPublication[]{
-            new RmqPublication
-        {
-            Topic = new RoutingKey("ExpenseCreated"),
-            MaxOutStandingMessages = 5,
-            MaxOutStandingCheckIntervalMilliSeconds = 500,
-            WaitForConfirmsTimeOutInMilliseconds = 1000,
-            MakeChannels = OnMissingChannel.Create
-        }}
+    	new RmqPublication
+      {
+        Topic = new RoutingKey("ExpenseCreated"),
+				MaxOutStandingMessages = 5,
+				MaxOutStandingCheckIntervalMilliSeconds = 500,
+				WaitForConfirmsTimeOutInMilliseconds = 1000,
+				MakeChannels = OnMissingChannel.Create
+      }}
     ).Create()
   )
   .UseSqliteOutbox(new SqliteConfiguration("Filename=expenses.db;Cache=Shared", "Outbox"), typeof(SqliteConnectionProvider), ServiceLifetime.Singleton)
@@ -62,23 +72,27 @@ builder.Services
   .AutoFromAssemblies();
 
 builder.Services
-    .AddDarker(options =>
-    {
-        options.HandlerLifetime = ServiceLifetime.Scoped;
-        options.QueryProcessorLifetime = ServiceLifetime.Scoped;
-    })
-    .AddHandlersFromAssemblies(typeof(FindExpenseByIdHandler).Assembly);
+  .AddDarker(options =>
+	{
+		options.HandlerLifetime = ServiceLifetime.Scoped;
+		options.QueryProcessorLifetime = ServiceLifetime.Scoped;
+	})
+  .AddHandlersFromAssemblies(typeof(FindExpenseByIdHandler).Assembly);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
+}
+else
+{
+	app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthorization();
 

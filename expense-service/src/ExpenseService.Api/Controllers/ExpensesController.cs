@@ -8,7 +8,7 @@ using Paramore.Darker;
 namespace ExpenseService.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ExpensesController : ControllerBase
 {
   public readonly IAmACommandProcessor _commandProcessor;
