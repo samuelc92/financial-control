@@ -26,7 +26,16 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
     var tx = await _uow.Database.BeginTransactionAsync(cancellationToken);
     try
     {
-      _uow.Add(new Expense(addExpense.Category, addExpense.Amount, addExpense.TransactionDate, addExpense.Status, addExpense.Description));
+      _uow.Add(new Expense(
+        addExpense.Id,
+        addExpense.Category,
+        addExpense.Description,
+        addExpense.Amount,
+        addExpense.Status,
+        addExpense.TransactionDate,
+        DueDate: null,
+        PaidDate: null));
+
       posts.Add(await _postBox.DepositPostAsync(new ExpenseCreatedEvent(addExpense.Id, addExpense.Category.ToString())));
       await _uow.SaveChangesAsync(cancellationToken);
       await tx.CommitAsync(cancellationToken);

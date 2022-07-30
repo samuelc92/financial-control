@@ -5,7 +5,7 @@ namespace ExpenseService.Api.Ports.Responses;
 
 public class FindExpenseResult
 {
-  public int Id { get; set; }
+  public Guid Id { get; set; }
   public string? Description { get; }
   public double Amount { get; set; }
   public Category Category { get; set; }

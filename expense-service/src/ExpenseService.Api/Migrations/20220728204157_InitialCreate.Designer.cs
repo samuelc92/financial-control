@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseService.Api.Migrations
 {
     [DbContext(typeof(ExpenseDbContext))]
-    [Migration("20220612232702_UpdateExpense_20220613")]
-    partial class UpdateExpense_20220613
+    [Migration("20220728204157_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,9 +21,9 @@ namespace ExpenseService.Api.Migrations
 
             modelBuilder.Entity("ExpenseService.Api.Domain.Expense", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Amount")
                         .HasColumnType("REAL");

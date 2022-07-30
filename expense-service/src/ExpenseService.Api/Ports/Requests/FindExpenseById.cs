@@ -6,9 +6,9 @@ namespace ExpenseService.Api.Ports.Requests;
 
 public class FindExpenseById : IQuery<FindExpenseResult>
 {
-  public int Id { get; }
+  public Guid Id { get; }
 
-  public FindExpenseById(int id)
+  public FindExpenseById(Guid id)
   {
     Id = id;
   }

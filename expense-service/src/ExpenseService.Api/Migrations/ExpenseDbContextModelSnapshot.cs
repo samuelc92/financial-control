@@ -19,9 +19,9 @@ namespace ExpenseService.Api.Migrations
 
             modelBuilder.Entity("ExpenseService.Api.Domain.Expense", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Amount")
                         .HasColumnType("REAL");

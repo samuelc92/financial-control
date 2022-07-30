@@ -29,4 +29,19 @@ spec:
   ports:
     - port: 5092
       targetPort: 5092
-  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/expenses"
+        backend:
+          service:
+            name: exp-service
+            port:
+              number: 5092

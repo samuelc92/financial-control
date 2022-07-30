@@ -17,7 +17,7 @@ public class FindExpenseByIdHandler : QueryHandlerAsync<FindExpenseById, FindExp
    public override async Task<FindExpenseResult> ExecuteAsync(FindExpenseById query, CancellationToken cancellationToken = new CancellationToken())
    {
      return await _uow.Expenses
-        .Where(p => p.Id == query.Id) 
+        // .Where(p => p.Id == query.Id) 
         .Select(p => new FindExpenseResult(p))
         .SingleAsync(cancellationToken);
    }
