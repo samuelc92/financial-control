@@ -26,17 +26,9 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
     var tx = await _uow.Database.BeginTransactionAsync(cancellationToken);
     try
     {
-      _uow.Add(new Expense(
-        addExpense.Id,
-        addExpense.Category,
-        addExpense.Description,
-        addExpense.Amount,
-        addExpense.Status,
-        addExpense.TransactionDate,
-        DueDate: null,
-        PaidDate: null));
-
-      posts.Add(await _postBox.DepositPostAsync(new ExpenseCreatedEvent(addExpense.Id, addExpense.Category.ToString())));
+      var expense = buildExpense(addExpense);
+      _uow.Add(expense);
+      posts.Add(await _postBox.DepositPostAsync(buildExpenseCreatedEvent(expense)));
       await _uow.SaveChangesAsync(cancellationToken);
       await tx.CommitAsync(cancellationToken);
     }
@@ -48,4 +40,22 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
     await _postBox.ClearOutboxAsync(posts, cancellationToken: cancellationToken);
     return await base.HandleAsync(addExpense, cancellationToken);
   }
+
+  private Expense buildExpense(AddExpense addExpense) =>
+    new Expense(
+      addExpense.Id,
+      addExpense.Category,
+      addExpense.Description,
+      addExpense.Amount,
+      addExpense.Status,
+      addExpense.TransactionDate,
+      DueDate: null,
+      PaidDate: null);
+
+  private ExpenseCreatedEvent buildExpenseCreatedEvent(Expense expense) =>
+    new ExpenseCreatedEvent(
+      expense.Id,
+      expense.Category.ToString(),
+      expense.Amount,
+      expense.TransactionDate);
 }
