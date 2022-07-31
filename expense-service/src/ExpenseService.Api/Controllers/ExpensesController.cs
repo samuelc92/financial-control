@@ -20,10 +20,10 @@ public class ExpensesController : ControllerBase
     _queryProcessor = queryProcessor;
   }
 
-  [HttpGet("{id}")]
-  public async Task<ActionResult<FindExpenseResult>> Get(string id)
+  [HttpGet]
+  public async Task<ActionResult<ICollection<FindExpenseResult>>> Get([FromQuery] string? id)
   {
-      var addedExpense = await _queryProcessor.ExecuteAsync(new FindExpenseById(Guid.NewGuid()));
+      var addedExpense = await _queryProcessor.ExecuteAsync(new FindExpenseParameter());
 
       if (addedExpense is null) return new NotFoundResult();
 
