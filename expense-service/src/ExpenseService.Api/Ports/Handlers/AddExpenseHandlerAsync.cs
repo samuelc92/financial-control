@@ -1,4 +1,3 @@
-
 using ExpenseService.Api.Domain;
 using ExpenseService.Api.Infrastructure.DataAccess;
 using ExpenseService.Api.Ports.Requests;
@@ -20,8 +19,6 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
 
   public override async Task<AddExpense> HandleAsync(AddExpense addExpense, CancellationToken cancellationToken = default(CancellationToken))
   {
-    System.Console.WriteLine($"AddExpense Command Id: {addExpense.Id}");
-
     var posts = new List<Guid>();
     var tx = await _uow.Database.BeginTransactionAsync(cancellationToken);
     try
