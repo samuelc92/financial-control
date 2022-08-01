@@ -1,5 +1,8 @@
 using FinancialControlReader.Api;
+using FinancialControlReader.Api.Database;
 using MassTransit;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,11 @@ builder.Services.AddMassTransit(options =>
     });
   }
 );
+
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(nameof(DatabaseSettings)));
+builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+var databaseSettings = builder.Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+builder.Services.AddSingleton<IMongoClient>(new MongoClient(databaseSettings.ConnectionString));
 
 var app = builder.Build();
 
