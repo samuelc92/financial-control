@@ -18,19 +18,37 @@ public class ExpenseCreatedConsumer : IConsumer<ExpenseCreatedMessage>
     _categoryReportRepository = categoryReportRepository;
   }
 
-  public Task Consume(ConsumeContext<ExpenseCreatedMessage> context)
+  public async Task Consume(ConsumeContext<ExpenseCreatedMessage> context)
   {
     _logger.LogInformation($"Received Message: {context.Message}");
     var expense = context.Message;
-     
-    _categoryReportRepository.Insert(new CategoryReport {
-      Id = $"{expense.TransactionDate.Month}{expense.TransactionDate.Year}",
-      Resume = new List<Resume> { new Resume {
-        Category = expense.Category,
-        Total = expense.Amount
-      }}
-    });
+    var categoryReportId = $"{expense.TransactionDate.Month}{expense.TransactionDate.Year}"; 
 
-    return Task.CompletedTask;
+    var categoryReport = await _categoryReportRepository.GetCategoryReport(categoryReportId);
+    if (categoryReport == null)
+      await _categoryReportRepository.Insert(CreateCategoryReport(expense));
+    else
+    {
+      var resume = categoryReport.Resume.FirstOrDefault(x => x.Category == expense.Category);
+      if (resume == null)
+        categoryReport.Resume.Add(new Resume { Category = expense.Category, Total = expense.Amount });
+      else
+        resume.Total += expense.Amount;
+      await _categoryReportRepository.Update(categoryReport);
+    }
   }
+
+  private CategoryReport CreateCategoryReport(ExpenseCreatedMessage expense) =>
+    new CategoryReport
+    {
+      Id = $"{expense.TransactionDate.Month}{expense.TransactionDate.Year}",
+      Resume = new List<Resume> 
+      { 
+        new Resume
+        {
+          Category = expense.Category,
+          Total = expense.Amount
+        }
+      }
+    };
 }
