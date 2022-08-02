@@ -29,13 +29,18 @@ public class ExpenseCreatedConsumer : IConsumer<ExpenseCreatedMessage>
       await _categoryReportRepository.Insert(CreateCategoryReport(expense));
     else
     {
-      var resume = categoryReport.Resume.FirstOrDefault(x => x.Category == expense.Category);
-      if (resume == null)
-        categoryReport.Resume.Add(new Resume { Category = expense.Category, Total = expense.Amount });
-      else
-        resume.Total += expense.Amount;
+      UpdateCategoryReport(categoryReport, expense);
       await _categoryReportRepository.Update(categoryReport);
     }
+  }
+
+  private void UpdateCategoryReport(CategoryReport categoryReport, ExpenseCreatedMessage expense)
+  {
+    var resume = categoryReport.Resume.FirstOrDefault(x => x.Category == expense.Category);
+    if (resume == null)
+      categoryReport.Resume.Add(new Resume { Category = expense.Category, Total = expense.Amount });
+    else
+      resume.Total += expense.Amount;
   }
 
   private CategoryReport CreateCategoryReport(ExpenseCreatedMessage expense) =>
