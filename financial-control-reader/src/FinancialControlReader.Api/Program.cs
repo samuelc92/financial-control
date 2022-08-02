@@ -26,6 +26,6 @@ builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>(
 
 var app = builder.Build();
 
-app.MapGet("/", async (ICategoryReportRepository categoryReportRepository) => Results.Ok(await categoryReportRepository.GetCategoryReport("72022")));
+app.MapGet("/", async (ICategoryReportRepository categoryReportRepository) => Results.Ok(await categoryReportRepository.GetCategoryReport("82022")));
 
 app.Run();

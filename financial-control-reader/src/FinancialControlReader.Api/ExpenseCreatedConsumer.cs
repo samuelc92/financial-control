@@ -24,7 +24,7 @@ public class ExpenseCreatedConsumer : IConsumer<ExpenseCreatedMessage>
     var expense = context.Message;
      
     _categoryReportRepository.Insert(new CategoryReport {
-      // Id = $"{expense.TransactionDate.Month}{expense.TransactionDate.Year}",
+      Id = $"{expense.TransactionDate.Month}{expense.TransactionDate.Year}",
       Resume = new List<Resume> { new Resume {
         Category = expense.Category,
         Total = expense.Amount

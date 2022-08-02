@@ -14,7 +14,7 @@ public class CategoryReportRepository : ICategoryReportRepository
   }
 
   public Task<CategoryReport> GetCategoryReport(string id) =>
-	  _categoryReports.Find(x => true).FirstOrDefaultAsync();
+	  _categoryReports.Find(x => x.Id == id).FirstOrDefaultAsync();
 
   public Task Insert(CategoryReport categoryReport) => _categoryReports.InsertOneAsync(categoryReport);
 
