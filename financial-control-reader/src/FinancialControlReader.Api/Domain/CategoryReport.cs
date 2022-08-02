@@ -6,7 +6,6 @@ namespace FinancialControlReader.Api.Domain;
 public class CategoryReport 
 {
 	[BsonId]
-	// [BsonRepresentation(BsonType.ObjectId)]
 	public string Id { get; set; } 
  	public ICollection<Resume> Resume { get; set; }   
 

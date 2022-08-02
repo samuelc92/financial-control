@@ -26,6 +26,10 @@ builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>(
 
 var app = builder.Build();
 
-app.MapGet("/", async (ICategoryReportRepository categoryReportRepository) => Results.Ok(await categoryReportRepository.GetCategoryReport("82022")));
+app.MapGet("/reports/categories", async (string? month, string? year, ICategoryReportRepository categoryReportRepository) =>
+{
+  var input = String.IsNullOrEmpty(month) && String.IsNullOrEmpty(year) ? $"{DateTime.Now.Month}{DateTime.Now.Year}" : $"{month}{year}";
+  return Results.Ok(await categoryReportRepository.GetCategoryReport(input));
+});
 
 app.Run();
