@@ -1,6 +1,6 @@
 
 using FinancialControlReader.Api.Database.Repositories;
-using FinancialControlReader.Api.Domain;
+using FinancialControlReader.Api.Domain.Models;
 using MassTransit;
 
 namespace FinancialControlReader.Api;

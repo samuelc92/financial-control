@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace FinancialControlReader.Api.Domain;
+namespace FinancialControlReader.Api.Domain.Models;
 public class AnnualReport
 {
   public AnnualReport(string id) 

@@ -1,4 +1,4 @@
-using FinancialControlReader.Api.Domain;
+using FinancialControlReader.Api.Domain.Models;
 using MongoDB.Driver;
 
 namespace FinancialControlReader.Api.Database.Repositories;
