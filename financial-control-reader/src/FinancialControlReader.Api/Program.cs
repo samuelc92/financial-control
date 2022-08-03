@@ -5,7 +5,19 @@ using MassTransit;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
+var AllowSpecificOrigins = "AllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(AllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin()
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddMassTransit(options =>
   {
@@ -26,7 +38,9 @@ builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>(
 
 var app = builder.Build();
 
-app.MapGet("/reports/categories", async (string? month, string? year, ICategoryReportRepository categoryReportRepository) =>
+app.UseCors(AllowSpecificOrigins);
+
+app.MapGet("/api/reports/categories", async (string? month, string? year, ICategoryReportRepository categoryReportRepository) =>
 {
   var input = String.IsNullOrEmpty(month) && String.IsNullOrEmpty(year) ? $"{DateTime.Now.Month}{DateTime.Now.Year}" : $"{month}{year}";
   return Results.Ok(await categoryReportRepository.GetCategoryReport(input));
