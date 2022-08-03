@@ -1,6 +1,7 @@
 using FinancialControlReader.Api;
 using FinancialControlReader.Api.Database;
 using FinancialControlReader.Api.Database.Repositories;
+using FinancialControlReader.Api.Domain.UseCases;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -36,6 +37,7 @@ var databaseSettings = builder.Configuration.GetSection(nameof(DatabaseSettings)
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(databaseSettings.ConnectionString));
 builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>();
 builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
+builder.Services.AddScoped<IRegisterCategoryReportUseCase, RegisterCategoryReportUseCase>();
 
 var app = builder.Build();
 
