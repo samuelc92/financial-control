@@ -13,6 +13,8 @@ public class AnnualReport
   public string Id { get; set; } 
 
   public ICollection<AnnualReportData>? Data { get; set; }
+
+	public static string CollectionName() => "annualReports";
 }
 
 public class AnnualReportData

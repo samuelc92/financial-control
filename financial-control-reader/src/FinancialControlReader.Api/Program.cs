@@ -35,6 +35,7 @@ builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOp
 var databaseSettings = builder.Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(databaseSettings.ConnectionString));
 builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>();
+builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
 
 var app = builder.Build();
 
