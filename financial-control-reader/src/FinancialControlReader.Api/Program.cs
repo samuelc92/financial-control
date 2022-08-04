@@ -38,6 +38,7 @@ builder.Services.AddSingleton<IMongoClient>(new MongoClient(databaseSettings.Con
 builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>();
 builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
 builder.Services.AddScoped<IRegisterCategoryReportUseCase, RegisterCategoryReportUseCase>();
+builder.Services.AddScoped<IRegisterAnnualReportUseCase, RegisterAnnualReportUseCase>();
 
 var app = builder.Build();
 

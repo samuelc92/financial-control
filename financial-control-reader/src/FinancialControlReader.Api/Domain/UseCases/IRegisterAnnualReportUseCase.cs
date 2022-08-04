@@ -1,6 +1,6 @@
 namespace FinancialControlReader.Api.Domain.UseCases;
 
-public interface IRegisterCategoryReportUseCase
+public interface IRegisterAnnualReportUseCase
 {
   Task RegisterAsync(string category, double amount, DateTime transactionDate);    
 }
