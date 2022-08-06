@@ -12,7 +12,7 @@ public class AnnualReportRepository : IAnnualReportRepository
     _annualReports = database.GetCollection<AnnualReport>(AnnualReport.CollectionName());
   }
 
-  public Task<AnnualReport> Get(string id) => _annualReports.Find(x => x.Id == id).FirstOrDefaultAsync();
+  public Task<AnnualReport> Get(int id) => _annualReports.Find(x => x.Id == id).FirstOrDefaultAsync();
 
   public Task Insert(AnnualReport annualReport) => _annualReports.InsertOneAsync(annualReport);
 

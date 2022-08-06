@@ -4,13 +4,14 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace FinancialControlReader.Api.Domain.Models;
 public class AnnualReport
 {
-  public AnnualReport(string id) 
+  public AnnualReport(int id, AnnualReportData data) 
   {
     Id = id;
+    Data = new List<AnnualReportData> { data };
   }
 
 	[BsonId]
-  public string Id { get; set; } 
+  public int Id { get; set; } 
 
   public ICollection<AnnualReportData>? Data { get; set; }
 

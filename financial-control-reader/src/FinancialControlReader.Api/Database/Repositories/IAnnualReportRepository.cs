@@ -4,7 +4,7 @@ namespace FinancialControlReader.Api.Database.Repositories;
 
 public interface IAnnualReportRepository
 {
-	Task<AnnualReport> Get(string id);
+	Task<AnnualReport> Get(int id);
   Task Insert(AnnualReport annualReport);
   Task Update(AnnualReport annualReport);
 }

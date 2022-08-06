@@ -35,8 +35,10 @@ builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(na
 builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 var databaseSettings = builder.Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(databaseSettings.ConnectionString));
+
 builder.Services.AddScoped<ICategoryReportRepository, CategoryReportRepository>();
 builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
+
 builder.Services.AddScoped<IRegisterCategoryReportUseCase, RegisterCategoryReportUseCase>();
 builder.Services.AddScoped<IRegisterAnnualReportUseCase, RegisterAnnualReportUseCase>();
 
@@ -48,6 +50,12 @@ app.MapGet("/api/reports/categories", async (string? month, string? year, ICateg
 {
   var input = String.IsNullOrEmpty(month) && String.IsNullOrEmpty(year) ? $"{DateTime.Now.Month}{DateTime.Now.Year}" : $"{month}{year}";
   return Results.Ok(await categoryReportRepository.GetCategoryReport(input));
+});
+
+app.MapGet("/api/reports/annual", async (int? year, IAnnualReportRepository annualReportRepository) =>
+{
+  var input = year.HasValue ? year : DateTime.Now.Year;
+  return Results.Ok(await annualReportRepository.Get(input.Value));
 });
 
 app.Run();
