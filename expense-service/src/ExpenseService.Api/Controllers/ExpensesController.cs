@@ -37,4 +37,11 @@ public class ExpensesController : ControllerBase
       await _commandProcessor.SendAsync(addExpense);
       return new NoContentResult();
   }
+
+  [HttpDelete(Name = "DeleteExpense")]
+  public async Task<ActionResult> Delete([FromQuery(Name = "id")] string[] expenseIds)
+  {
+    await _commandProcessor.SendAsync(new DeleteExpense(expenseIds.Select(p => Guid.Parse(p)).ToArray()));
+    return new NoContentResult();
+  }
 }
