@@ -47,7 +47,8 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
       addExpense.Status,
       addExpense.TransactionDate,
       DueDate: null,
-      PaidDate: null);
+      PaidDate: null
+    );
 
   private ExpenseCreatedEvent buildExpenseCreatedEvent(Expense expense) =>
     new ExpenseCreatedEvent(
