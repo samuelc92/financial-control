@@ -10,6 +10,8 @@ using Paramore.Brighter.Outbox.Sqlite;
 using Paramore.Brighter.Sqlite;
 using Paramore.Brighter.Sqlite.EntityFrameworkCore;
 using Paramore.Darker.AspNetCore;
+using Polly;
+using Polly.Registry;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,18 +40,33 @@ builder.Services.AddDbContext<ExpenseDbContext>(
 	}
 );
 
+var retryPolicy = Policy.Handle<Exception>()
+	.WaitAndRetry(new[] { TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(150) });
+var circuitBreakerPolicy = Policy.Handle<Exception>().CircuitBreaker(1, TimeSpan.FromMilliseconds(500));
+var retryPolicyAsync = Policy.Handle<Exception>()
+	.WaitAndRetryAsync(new[] { TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(150) });
+var circuitBreakerPolicyAsync = Policy.Handle<Exception>().CircuitBreakerAsync(1, TimeSpan.FromMilliseconds(500));
+var policyRegistry = new PolicyRegistry()
+{
+	{ CommandProcessor.RETRYPOLICY, retryPolicy },
+	{ CommandProcessor.CIRCUITBREAKER, circuitBreakerPolicy },
+	{ CommandProcessor.RETRYPOLICYASYNC, retryPolicyAsync },
+	{ CommandProcessor.CIRCUITBREAKERASYNC, circuitBreakerPolicyAsync }
+};
+
 builder.Services
 	.AddBrighter(options =>
   {
 		options.HandlerLifetime = ServiceLifetime.Scoped;
 		options.CommandProcessorLifetime = ServiceLifetime.Scoped;
 		options.MapperLifetime = ServiceLifetime.Scoped;
+		options.PolicyRegistry = policyRegistry;
   })
   .UseExternalBus(new RmqProducerRegistryFactory(
     new RmqMessagingGatewayConnection
     {
       AmpqUri = new AmqpUriSpecification(new Uri("amqp://guest:guest@localhost:5672")),
-      Exchange = new Exchange("default")
+      Exchange = new Exchange("financial.control.expenses")
     },
     new RmqPublication[]{
     	new RmqPublication
@@ -64,11 +81,7 @@ builder.Services
   )
   .UseSqliteOutbox(new SqliteConfiguration("Filename=expenses.db;Cache=Shared", "Outbox"), typeof(SqliteConnectionProvider), ServiceLifetime.Singleton)
   .UseSqliteTransactionConnectionProvider(typeof(SqliteEntityFrameworkConnectionProvider<ExpenseDbContext>), ServiceLifetime.Scoped)
-  .UseOutboxSweeper(options =>
-  {
-    options.TimerInterval = 5;
-    options.MinimumMessageAge = 5000;
-  })
+  .UseOutboxSweeper()
   .AutoFromAssemblies();
 
 builder.Services

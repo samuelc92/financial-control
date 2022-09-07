@@ -25,7 +25,7 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
     {
       var expense = buildExpense(addExpense);
       _uow.Add(expense);
-      posts.Add(await _postBox.DepositPostAsync(buildExpenseCreatedEvent(expense)));
+      posts.Add(await _postBox.DepositPostAsync(ExpenseCreatedEvent.Of(expense)));
       await _uow.SaveChangesAsync(cancellationToken);
       await tx.CommitAsync(cancellationToken);
     }
@@ -49,11 +49,4 @@ public class AddExpenseHandlerAsync: RequestHandlerAsync<AddExpense>
       DueDate: null,
       PaidDate: null
     );
-
-  private ExpenseCreatedEvent buildExpenseCreatedEvent(Expense expense) =>
-    new ExpenseCreatedEvent(
-      expense.Id,
-      expense.Category.ToString(),
-      expense.Amount,
-      expense.TransactionDate);
 }
