@@ -1,4 +1,5 @@
 using ExpenseService.Api.Infrastructure.DataAccess;
+using ExpenseService.Api.Ports.Events;
 using ExpenseService.Api.Ports.Requests;
 using Paramore.Brighter;
 
@@ -18,10 +19,14 @@ public class DeleteExpenseHandlerAsync: RequestHandlerAsync<DeleteExpense>
 
   public override async Task<DeleteExpense> HandleAsync(DeleteExpense deleteExpense, CancellationToken cancellationToken = default(CancellationToken))
   {
+    var posts = new List<Guid>();
     var tx = await _uow.Database.BeginTransactionAsync(cancellationToken);
     try
     {
-      _uow.Expenses.RemoveRange(_uow.Expenses.Where(p => deleteExpense.ExpenseIds.Contains(p.Id)));
+      var expenses = _uow.Expenses.Where(p => deleteExpense.ExpenseIds.Contains(p.Id));
+      _uow.Expenses.RemoveRange(expenses);
+      foreach(var expense in expenses)
+        posts.Add(await _postBox.DepositPostAsync(ExpenseDeletedEvent.Of(expense)));
       await _uow.SaveChangesAsync(cancellationToken);
       await tx.CommitAsync(cancellationToken);
     }
@@ -30,6 +35,7 @@ public class DeleteExpenseHandlerAsync: RequestHandlerAsync<DeleteExpense>
       await tx.RollbackAsync(cancellationToken);
       return await base.HandleAsync(deleteExpense, cancellationToken);
     }
+    await _postBox.ClearOutboxAsync(posts, cancellationToken: cancellationToken);
     return await base.HandleAsync(deleteExpense, cancellationToken);
   }
 }
