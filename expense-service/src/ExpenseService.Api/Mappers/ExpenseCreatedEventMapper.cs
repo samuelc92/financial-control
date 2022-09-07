@@ -1,4 +1,4 @@
-using ExpenseService.Api.Ports.Requests;
+using ExpenseService.Api.Ports.Events;
 using Paramore.Brighter;
 using System.Text.Json;
 

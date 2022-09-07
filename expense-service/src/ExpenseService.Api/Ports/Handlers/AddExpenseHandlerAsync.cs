@@ -1,5 +1,6 @@
 using ExpenseService.Api.Domain;
 using ExpenseService.Api.Infrastructure.DataAccess;
+using ExpenseService.Api.Ports.Events;
 using ExpenseService.Api.Ports.Requests;
 using Paramore.Brighter;
 

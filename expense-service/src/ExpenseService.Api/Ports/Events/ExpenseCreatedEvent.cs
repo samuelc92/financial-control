@@ -2,7 +2,7 @@
 using ExpenseService.Api.Domain;
 using Paramore.Brighter;
 
-namespace ExpenseService.Api.Ports.Requests;
+namespace ExpenseService.Api.Ports.Events;
 
 public class ExpenseCreatedEvent : Event
 {
