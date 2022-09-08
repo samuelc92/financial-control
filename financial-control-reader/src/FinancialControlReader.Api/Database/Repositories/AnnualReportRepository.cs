@@ -16,5 +16,5 @@ public class AnnualReportRepository : IAnnualReportRepository
 
   public Task Insert(AnnualReport annualReport) => _annualReports.InsertOneAsync(annualReport);
 
-  public Task Update(AnnualReport annualReport) => _annualReports.ReplaceOneAsync(x => x.Id == annualReport.Id, annualReport);
+  public Task UpdateAsync(AnnualReport annualReport) => _annualReports.ReplaceOneAsync(x => x.Id == annualReport.Id, annualReport);
 }

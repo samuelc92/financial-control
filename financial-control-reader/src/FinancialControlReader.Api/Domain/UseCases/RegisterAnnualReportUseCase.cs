@@ -20,7 +20,7 @@ public class RegisterAnnualReportUseCase : IRegisterAnnualReportUseCase
     else
     {
       UpdateAnnualReport(report, amount, transactionDate);
-      await _annualReportRepository.Update(report);
+      await _annualReportRepository.UpdateAsync(report);
     }
   }
   

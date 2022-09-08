@@ -24,7 +24,7 @@ public class ExpenseCreatedConsumer : IConsumer<ExpenseCreatedMessage>
 
   public async Task Consume(ConsumeContext<ExpenseCreatedMessage> context)
   {
-    _logger.LogInformation($"Received Message: {context.Message}");
+    _logger.LogInformation($"Received Expense Created Message: {context.Message}");
     var expense = context.Message;
     await _registerCategoryReportUseCase.RegisterAsync(expense.Category, expense.Amount, expense.TransactionDate);
     await _registerAnnualReportUseCase.RegisterAsync(expense.Amount, expense.TransactionDate);

@@ -6,5 +6,5 @@ public interface IAnnualReportRepository
 {
 	Task<AnnualReport> Get(int id);
   Task Insert(AnnualReport annualReport);
-  Task Update(AnnualReport annualReport);
+  Task UpdateAsync(AnnualReport annualReport);
 }

@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddMassTransit(options =>
   {
     options.AddConsumer<ExpenseCreatedConsumer>();
+    options.AddConsumer<ExpenseDeletedConsumer>();
     options.UsingRabbitMq((context, cfg) =>
     {
       cfg.ConfigureEndpoints(context);
@@ -41,6 +42,7 @@ builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
 
 builder.Services.AddScoped<IRegisterCategoryReportUseCase, RegisterCategoryReportUseCase>();
 builder.Services.AddScoped<IRegisterAnnualReportUseCase, RegisterAnnualReportUseCase>();
+builder.Services.AddScoped<IDeductAnnualReportUseCase, DeductAnnualReportUseCase>();
 
 var app = builder.Build();
 

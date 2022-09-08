@@ -16,6 +16,9 @@ public class AnnualReport
   public ICollection<AnnualReportData>? Data { get; set; }
 
 	public static string CollectionName() => "annualReports";
+
+  public AnnualReportData? GetAnnualReportDataByMonth(int month) =>
+    Data?.Where(data => data.Month == month).FirstOrDefault();
 }
 
 public class AnnualReportData
