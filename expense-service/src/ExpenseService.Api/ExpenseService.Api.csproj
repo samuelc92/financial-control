@@ -12,13 +12,13 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
-    <PackageReference Include="Paramore.Brighter" Version="9.1.2" />
-    <PackageReference Include="Paramore.Brighter.Extensions.DependencyInjection" Version="9.1.2" />
-    <PackageReference Include="Paramore.Brighter.Extensions.Hosting" Version="9.1.2" />
-    <PackageReference Include="Paramore.Brighter.MessagingGateway.RMQ" Version="9.1.2" />
-    <PackageReference Include="Paramore.Brighter.Outbox.Sqlite" Version="9.1.2" />
-    <PackageReference Include="Paramore.Brighter.Sqlite.EntityFrameworkCore" Version="9.1.2" />
-    <PackageReference Include="Paramore.Darker.AspNetCore" Version="2.0.78" />
+    <PackageReference Include="Paramore.Brighter" Version="9.1.19" />
+    <PackageReference Include="Paramore.Brighter.Extensions.DependencyInjection" Version="9.1.19" />
+    <PackageReference Include="Paramore.Brighter.Extensions.Hosting" Version="9.1.19" />
+    <PackageReference Include="Paramore.Brighter.MessagingGateway.RMQ" Version="9.1.19" />
+    <PackageReference Include="Paramore.Brighter.Outbox.Sqlite" Version="9.1.19" />
+    <PackageReference Include="Paramore.Brighter.Sqlite.EntityFrameworkCore" Version="9.1.19" />
+    <PackageReference Include="Paramore.Darker.AspNetCore" Version="2.0.79" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 

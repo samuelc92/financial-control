@@ -16,9 +16,9 @@ public class ExpenseDeletedEvent : Event
 	public double Amount { get; set; }
   public DateTime TransactionDate { get; set; }
 
-  public static ExpenseCreatedEvent Of(Expense expense) =>
-    new ExpenseCreatedEvent(
-      expense.Id,
+  public static ExpenseDeletedEvent Of(Expense expense) =>
+    new ExpenseDeletedEvent(
+      Guid.NewGuid(),
       expense.Category.ToString(),
       expense.Amount,
       expense.TransactionDate);

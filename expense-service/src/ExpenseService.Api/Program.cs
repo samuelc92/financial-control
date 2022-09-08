@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using ExpenseService.Api.Infrastructure.DataAccess;
+using ExpenseService.Api.Ports.Events;
 using ExpenseService.Api.Ports.Handlers;
 using Microsoft.EntityFrameworkCore;
 using Paramore.Brighter;
@@ -68,17 +69,25 @@ builder.Services
       AmpqUri = new AmqpUriSpecification(new Uri("amqp://guest:guest@localhost:5672")),
       Exchange = new Exchange("financial.control.expenses")
     },
-    new RmqPublication[]{
-    	new RmqPublication
-      {
-        Topic = new RoutingKey("ExpenseCreated"),
-				MaxOutStandingMessages = 5,
-				MaxOutStandingCheckIntervalMilliSeconds = 500,
-				WaitForConfirmsTimeOutInMilliseconds = 1000,
-				MakeChannels = OnMissingChannel.Create
-      }}
-    ).Create()
-  )
+  new RmqPublication[]
+	{
+    new RmqPublication
+    {
+      Topic = new RoutingKey(nameof(ExpenseCreatedEvent)),
+      MaxOutStandingMessages = 5,
+      MaxOutStandingCheckIntervalMilliSeconds = 500,
+      WaitForConfirmsTimeOutInMilliseconds = 1000,
+      MakeChannels = OnMissingChannel.Create
+    },
+    new RmqPublication
+    {
+      Topic = new RoutingKey(nameof(ExpenseDeletedEvent)),
+      MaxOutStandingMessages = 5,
+      MaxOutStandingCheckIntervalMilliSeconds = 500,
+      WaitForConfirmsTimeOutInMilliseconds = 1000,
+      MakeChannels = OnMissingChannel.Create
+    }
+	}).Create())
   .UseSqliteOutbox(new SqliteConfiguration("Filename=expenses.db;Cache=Shared", "Outbox"), typeof(SqliteConnectionProvider), ServiceLifetime.Singleton)
   .UseSqliteTransactionConnectionProvider(typeof(SqliteEntityFrameworkConnectionProvider<ExpenseDbContext>), ServiceLifetime.Scoped)
   .UseOutboxSweeper()
