@@ -52,7 +52,7 @@ app.UseCors(AllowSpecificOrigins);
 app.MapGet("/api/reports/categories", async (string? month, string? year, ICategoryReportRepository categoryReportRepository) =>
 {
   var input = String.IsNullOrEmpty(month) && String.IsNullOrEmpty(year) ? $"{DateTime.Now.Month}{DateTime.Now.Year}" : $"{month}{year}";
-  return Results.Ok(await categoryReportRepository.GetCategoryReport(input));
+  return Results.Ok(await categoryReportRepository.GetCategoryReportAsync(input));
 });
 
 app.MapGet("/api/reports/annual", async (int? year, IAnnualReportRepository annualReportRepository) =>

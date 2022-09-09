@@ -16,13 +16,13 @@ public class RegisterCategoryReportUseCase : IRegisterCategoryReportUseCase
   {
     var categoryReportId = $"{transactionDate.Month}{transactionDate.Year}"; 
 
-    var categoryReport = await _categoryReportRepository.GetCategoryReport(categoryReportId);
+    var categoryReport = await _categoryReportRepository.GetCategoryReportAsync(categoryReportId);
     if (categoryReport == null)
-      await _categoryReportRepository.Insert(CreateCategoryReport(categoryReportId, category, amount, transactionDate));
+      await _categoryReportRepository.InsertAsync(CreateCategoryReport(categoryReportId, category, amount, transactionDate));
     else
     {
       UpdateCategoryReport(categoryReport, category, amount);
-      await _categoryReportRepository.Update(categoryReport);
+      await _categoryReportRepository.UpdateAsync(categoryReport);
     }
   }
 

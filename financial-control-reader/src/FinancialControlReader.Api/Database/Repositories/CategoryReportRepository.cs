@@ -13,11 +13,11 @@ public class CategoryReportRepository : ICategoryReportRepository
     _categoryReports = database.GetCollection<CategoryReport>(CategoryReport.CollectionName());
   }
 
-  public Task<CategoryReport> GetCategoryReport(string id) =>
+  public Task<CategoryReport> GetCategoryReportAsync(string id) =>
 	  _categoryReports.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-  public Task Insert(CategoryReport categoryReport) => _categoryReports.InsertOneAsync(categoryReport);
+  public Task InsertAsync(CategoryReport categoryReport) => _categoryReports.InsertOneAsync(categoryReport);
 
-  public Task Update(CategoryReport categoryReport) =>
+  public Task UpdateAsync(CategoryReport categoryReport) =>
 	  _categoryReports.ReplaceOneAsync(x => x.Id == categoryReport.Id, categoryReport);
 }

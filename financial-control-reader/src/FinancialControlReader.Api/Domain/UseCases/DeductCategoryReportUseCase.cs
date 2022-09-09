@@ -18,12 +18,12 @@ public class DeductCategoryReportUseCase : IDeductCategoryReportUseCase
     var categoryReport = await GetCategoryReportAsync(categoryReportId);
     var resume = GetCategoryReportResume(categoryReport, category); 
     resume.Total -= amount;
-    await _categoryReportRepository.Update(categoryReport);
-  }    
+    await _categoryReportRepository.UpdateAsync(categoryReport);
+  }
 
   private async Task<CategoryReport> GetCategoryReportAsync(string categoryReportId)
   {
-    var categoryReport = await _categoryReportRepository.GetCategoryReport(categoryReportId);
+    var categoryReport = await _categoryReportRepository.GetCategoryReportAsync(categoryReportId);
     if (categoryReport is null) throw new Exception($"Category report not found. categoryReportId={categoryReportId}");
     return categoryReport;
   }
