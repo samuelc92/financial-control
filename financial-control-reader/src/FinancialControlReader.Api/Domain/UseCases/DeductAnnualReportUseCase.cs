@@ -42,8 +42,7 @@ public class DeductAnnualReportUseCase : IDeductAnnualReportUseCase
   private AnnualReportData GetAnnualReportData(AnnualReport report, int month)
   {
     var data = report.GetAnnualReportDataByMonth(month);
-		if (data is null)
-      throw new Exception($"Annual Report Data not found. reportId={report?.Id} month={month}");
+		if (data is null) throw new Exception($"Annual Report Data not found. reportId={report?.Id} month={month}");
     return data;
   }
 }

@@ -43,6 +43,7 @@ builder.Services.AddScoped<IAnnualReportRepository, AnnualReportRepository>();
 builder.Services.AddScoped<IRegisterCategoryReportUseCase, RegisterCategoryReportUseCase>();
 builder.Services.AddScoped<IRegisterAnnualReportUseCase, RegisterAnnualReportUseCase>();
 builder.Services.AddScoped<IDeductAnnualReportUseCase, DeductAnnualReportUseCase>();
+builder.Services.AddScoped<IDeductCategoryReportUseCase, DeductCategoryReportUseCase>();
 
 var app = builder.Build();
 

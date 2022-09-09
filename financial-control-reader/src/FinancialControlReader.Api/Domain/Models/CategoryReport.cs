@@ -10,6 +10,8 @@ public class CategoryReport
  	public ICollection<Resume> Resume { get; set; }   
 
 	public static string CollectionName() => "categoryReports";
+
+	public Resume? GetResumeByCategory(string category) => Resume?.FirstOrDefault(x => x.Category == category);
 }
 
 public class Resume
