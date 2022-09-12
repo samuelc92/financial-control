@@ -26,9 +26,9 @@ public class RegisterAnnualReportUseCase : IRegisterAnnualReportUseCase
   
   private void UpdateAnnualReport(AnnualReport annualReport, double amount, DateTime transactionDate)
   {
-    var data = annualReport?.Data?.FirstOrDefault(x => x.Month == transactionDate.Month);
+    var data = annualReport?.Resume?.FirstOrDefault(x => x.Month == transactionDate.Month);
     if (data == null)
-      annualReport?.Data?.Add(new AnnualReportData { Month = transactionDate.Month, Total = amount });
+      annualReport?.Resume?.Add(new AnnualReportResume { Month = transactionDate.Month, Total = amount });
     else
       data.Total += amount;
   }
@@ -36,7 +36,7 @@ public class RegisterAnnualReportUseCase : IRegisterAnnualReportUseCase
   private AnnualReport CreateAnnualReport(int id, double amount, DateTime transactionDate) =>
     new AnnualReport (
       id,
-      new AnnualReportData 
+      new AnnualReportResume
       {
         Month = transactionDate.Month,
         Total = amount
