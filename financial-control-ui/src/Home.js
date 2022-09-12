@@ -44,7 +44,7 @@ export default function Home() {
                 if (response.data) {
                     let months = [];
                     let totals = [];
-                    response.data.map((value, index) => {
+                    response.data.data.map((value, index) => {
                         const { month, total } = value;
                         months.push(utilsService.getMonthNameFromNumber(month));
                         totals.push(total);

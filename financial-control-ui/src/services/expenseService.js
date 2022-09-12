@@ -1,4 +1,4 @@
-import api from "./httpService";
+import { api, apiReader } from "./httpService";
 
 const getExpenses = () => {
     return api.get("expense")
@@ -9,7 +9,11 @@ const getExpenseById = (expenseId) => {
 };
 
 const getResume = () => {
-    return api.get("expensereports/resume")
+    return apiReader.get("reports/categories")
+};
+
+const getReportTotalYear = () => {
+    return apiReader.get("reports/annual")
 };
 
 const postExpense = (data) => {
@@ -24,9 +28,6 @@ const deleteExpense = (ids) => {
     return api.delete(`expense?${ids.map((id, index) => `id[${index}]=${id}`).join('&')}`)
 }
 
-const getReportTotalYear = () => {
-    return api.get("expensereports/total_year")
-};
 
 export default {
     getExpenses,

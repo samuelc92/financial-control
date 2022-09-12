@@ -7,4 +7,11 @@ const api = axios.create({
     baseURL: 'https://localhost:5001/api'
 });
 
-export default api;
+const apiReader = axios.create({
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    baseURL: 'http://localhost:5214/api'
+});
+
+export { api, apiReader };
