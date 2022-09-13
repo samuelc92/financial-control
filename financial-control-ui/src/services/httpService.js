@@ -4,7 +4,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
-    baseURL: 'https://localhost:5001/api'
+    baseURL: 'http://localhost:5092/api'
 });
 
 const apiReader = axios.create({
