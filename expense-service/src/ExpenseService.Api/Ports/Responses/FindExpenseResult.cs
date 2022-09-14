@@ -1,4 +1,3 @@
-
 using ExpenseService.Api.Domain;
 
 namespace ExpenseService.Api.Ports.Responses;
